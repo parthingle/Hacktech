@@ -1,0 +1,3 @@
+@30@	daughter name
+@27@	Anniversary date
+@31@	Height
