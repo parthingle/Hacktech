@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Test Webpage</title>
+
+</head>
+<body>
+<h1> This is a test!</h1>
+
+<h4>Pres button to speak out the text</h4>
+<div id="d1"></div>
+<br><br>
+<button id="b1" onclick="rec()">Speak</button>
+
+<textarea id="t1"></textarea>
+
+<button id='b2' onclick="startConverting()">Transcribe</button>
+
+<textarea id="result"></textarea>
+<br><br>
+<p>
+
+</p>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+<script>
+
+function rec(){
+	console.log("works!");
+	var msg = new SpeechSynthesisUtterance(document.getElementById('t1').value);
+window.speechSynthesis.speak(msg);
+
+}
+
+
+var r = document.getElementById('result');
+		
+function startConverting () {
+	if('webkitSpeechRecognition' in window){
+		var speechRecognizer = new webkitSpeechRecognition();
+		speechRecognizer.continuous = true;
+		speechRecognizer.interimResults = true;
+		speechRecognizer.lang = 'en-IN';
+		speechRecognizer.start();
+
+		var finalTranscripts = '';
+
+		speechRecognizer.onresult = function(event){
+			var interimTranscripts = '';
+			for(var i = event.resultIndex; i < event.results.length; i++){
+				var transcript = event.results[i][0].transcript;
+				transcript.replace("\n", "<br>");
+				if(event.results[i].isFinal){
+						finalTranscripts += transcript;
+				}else{
+						interimTranscripts += transcript;
+				}
+					}
+				r.value = finalTranscripts +  interimTranscripts ;
+						
+
+				if(finalTranscripts=="Home"||finalTranscripts=="home"){
+					console.log('home detected');
+					var t =document.getElementById('test');
+					t.value+="The word 'Home' was detected ";
+				}
+				//r.value=finalTranscripts;
+				console.log('qw');
+			};
+
+
+					
+					speechRecognizer.onerror = function (event) {
+					};
+				}else{
+					r.innerHTML = 'Your browser is not supported. If google chrome, please upgrade!';
+				}
+				console.log('function over');
+			}
+
+
+			
+
+</script>
+
+
+
+</body>
+</html>
